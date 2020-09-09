@@ -14,41 +14,9 @@
             <div class="col-md-8">
                 <?php include './includes/header.php'; ?>
                 <?php
-                  if (isset($_POST['submitSearch'])) {
-                    $search = $_POST['search'];
-                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
-                    $result = mysqli_query($connection, $query);
-                    $count = mysqli_num_rows($result);
-
-                    if ($count == 0) {
-                      echo '<h1>No Results!</h1>';
-                    } else {
-                      while ($row = mysqli_fetch_assoc($result)) {
-                        $postTitle = $row['post_title'];
-                        $postAuthor = $row['post_author'];
-                        $postDate = $row['post_date'];
-                        $postImage = $row['post_image'];
-                        $postContent = substr($row['post_content'], 0, 100);
-                      ?>
-                      <h2>
-                          <a href="#"><?php echo $postTitle ?></a>
-                      </h2>
-                      <p class="lead">
-                          by <a href="index.php"><?php echo $postAuthor ?></a>
-                      </p>
-                      <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postDate ?></p>
-                      <hr>
-                      <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
-                      <hr>
-                      <p><?php echo $postContent ?></p>
-                      <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-                      <hr>
-                  <?php } ?>
-
-                  <?php
-                    }
-                  } else {
-                    $query = "SELECT * FROM posts";
+                  if (isset($_GET['cat_id'])) {
+                    $catId = $_GET['cat_id'];
+                    $query = "SELECT * FROM posts WHERE post_category_id = {$catId}";
                     $result = mysqli_query($connection, $query);
                     while ($row = mysqli_fetch_assoc($result)) {
                       $postId = $row['post_id'];
