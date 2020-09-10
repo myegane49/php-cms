@@ -16,7 +16,7 @@
                 <?php
                   if (isset($_POST['submitSearch'])) {
                     $search = $_POST['search'];
-                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
+                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published'";
                     $result = mysqli_query($connection, $query);
                     $count = mysqli_num_rows($result);
 
@@ -48,7 +48,7 @@
                   <?php
                     }
                   } else {
-                    $query = "SELECT * FROM posts";
+                    $query = "SELECT * FROM posts WHERE post_status = 'published'";
                     $result = mysqli_query($connection, $query);
                     while ($row = mysqli_fetch_assoc($result)) {
                       $postId = $row['post_id'];

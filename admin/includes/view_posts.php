@@ -10,6 +10,8 @@
       <th>Tags</th>
       <th>Comments</th>
       <th>Dates</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -30,7 +32,7 @@
         echo "<tr>";
         echo "<td>$postId</td>";
         echo "<td>$postAuthor</td>";
-        echo "<td>$postTitle</td>";
+        echo "<td><a href='../post.php?p_id=$postId'>$postTitle</a></td>";
 
         $query = "SELECT * FROM categories WHERE cat_id = {$postCatId}";
         $category_result = mysqli_query($connection, $query);
@@ -43,8 +45,8 @@
         echo "<td>$postTags</td>";
         echo "<td>$postCommentCount</td>";
         echo "<td>$postDate</td>";
-        echo "<td><a href='posts.php?delete=$postId'>Delete</a></td>";
         echo "<td><a href='posts.php?source=edit_post&p_id=$postId'>Edit</a></td>";
+        echo "<td><a href='posts.php?delete=$postId'>Delete</a></td>";
         echo "</tr>";
       }
     ?>

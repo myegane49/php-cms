@@ -44,37 +44,75 @@
                 <?php } ?>
 
                 <!-- Blog Comments -->
+                <?php
+                  if(isset($_POST['create_comment'])) {
+                    $postId = $_GET['p_id'];
+                    $commentAuthor = $_POST['comment_author'];
+                    $commentEmail = $_POST['comment_email'];
+                    $commentContent = $_POST['comment_content'];
 
+                    $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_date, comment_content, comment_status) ";
+                    $query .= "VALUES ({$postId}, '{$commentAuthor}', '{$commentEmail}', NOW(), '{$commentContent}', 'unapproved')";
+                    $result_comment = mysqli_query($connection, $query);
+                    if (!$result_comment) {
+                      echo mysqli_error($connection);
+                    }
+
+                    $post_query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$postId}";
+                    $result_update_post = mysqli_query($connection, $post_query);
+                  }
+                ?>
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <form role="form">
+                    <form role="form" action="" method="post">
                         <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
+                          <label>Author</label>
+                            <input class="form-control" type="text" name="comment_author">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="email" name="comment_email">
+                        </div>
+                        <div class="form-group">
+                            <label>Your Comment</label>
+                            <textarea class="form-control" rows="3" name="comment_content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
                     </form>
                 </div>
 
                 <hr>
 
                 <!-- Posted Comments -->
+                <?php
+                $query = "SELECT * FROM comments WHERE comment_post_id = {$postId} AND comment_status = 'approved' ORDER BY comment_id DESC";
+                $result_all_comments = mysqli_query($connection, $query);
+                while ($row = mysqli_fetch_assoc($result_all_comments)) {
+                  $commentDate = $row['comment_date'];
+                  $commentContent = $row['comment_content'];
+                  $commentAuthor = $row['comment_author'];
+                ?>
 
-                <!-- Comment -->
                 <div class="media">
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">Start Bootstrap
-                            <small>August 25, 2014 at 9:30 PM</small>
+                        <h4 class="media-heading"><?php echo $commentAuthor; ?>
+                            <small><?php echo $commentDate; ?></small>
                         </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <?php echo $commentContent; ?>
                     </div>
                 </div>
 
+              <?php } ?>
+
                 <!-- Comment -->
-                <div class="media">
+
+
+                <!-- Comment -->
+                <!-- <div class="media">
                     <a class="pull-left" href="#">
                         <img class="media-object" src="http://placehold.it/64x64" alt="">
                     </a>
@@ -82,9 +120,9 @@
                         <h4 class="media-heading">Start Bootstrap
                             <small>August 25, 2014 at 9:30 PM</small>
                         </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. -->
                         <!-- Nested Comment -->
-                        <div class="media">
+                        <!-- <div class="media">
                             <a class="pull-left" href="#">
                                 <img class="media-object" src="http://placehold.it/64x64" alt="">
                             </a>
@@ -94,21 +132,11 @@
                                 </h4>
                                 Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
                             </div>
-                        </div>
+                        </div> -->
                         <!-- End Nested Comment -->
-                    </div>
-                </div>
+                    <!-- </div>
+                </div> -->
 
-
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="previous">
-                        <a href="#">&larr; Older</a>
-                    </li>
-                    <li class="next">
-                        <a href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
             </div>
             <!-- Blog Sidebar Widgets Column -->
             <?php include './includes/sidebar.php'; ?>
