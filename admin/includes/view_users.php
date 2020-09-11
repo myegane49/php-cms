@@ -41,7 +41,7 @@
 
         echo "<td>$userRole</td>";
         // echo "<td></td>";
-        echo "<td><a href='users.php?edit_user=$userId'>Edit</a></td>";
+        echo "<td><a href='users.php?source=edit_user&u_id=$userId'>Edit</a></td>";
         echo "<td><a href='users.php?delete=$userId'>Delete</a></td>";
         echo "</tr>";
       }
@@ -50,24 +50,10 @@
 </table>
 
 <?php
-if (isset($_GET['approve'])) {
-  $commentId = $_GET['approve'];
-  $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$commentId}";
-  $approve_result = mysqli_query($connection, $query);
-  header("location: comments.php");
-}
-
-if (isset($_GET['unapprove'])) {
-  $commentId = $_GET['unapprove'];
-  $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$commentId}";
-  $unapprove_result = mysqli_query($connection, $query);
-  header("location: comments.php");
-}
-
 if (isset($_GET['delete'])) {
-  $commentId = $_GET['delete'];
-  $query = "DELETE FROM comments WHERE comment_id = {$commentId}";
+  $userId = $_GET['delete'];
+  $query = "DELETE FROM users WHERE user_id = {$userId}";
   $result = mysqli_query($connection, $query);
-  header("location: comments.php");
+  header("location: users.php");
 }
 ?>
