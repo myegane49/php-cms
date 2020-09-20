@@ -35,10 +35,12 @@
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postDate ?></p>
                     <hr>
-                    <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                    <a href="post.php?p_id=<?php echo $postId; ?>" style="display: block;">
+                      <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                    </a>
                     <hr>
                     <p><?php echo $postContent ?></p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a class="btn btn-primary" href="post.php?p_id=<?php echo $postId; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                     <hr>
 
                 <?php

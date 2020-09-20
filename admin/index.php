@@ -129,6 +129,23 @@
                     </div>
                 </div>
                 <!-- /.row -->
+                <?php 
+                    $posts_draft_query = "SELECT * FROM posts WHERE post_status = 'draft'";
+                    $posts_draft_result = mysqli_query($connection, $posts_draft_query);
+                    $posts_draft_count = mysqli_num_rows($posts_draft_result);
+
+                    $posts_published_query = "SELECT * FROM posts WHERE post_status = 'published'";
+                    $posts_published_result = mysqli_query($connection, $posts_published_query);
+                    $posts_published_count = mysqli_num_rows($posts_published_result);
+
+                    $comment_unapproved_query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
+                    $comment_unapproved_result = mysqli_query($connection, $comment_unapproved_query);
+                    $comment_unapproved_count = mysqli_num_rows($comment_unapproved_result);
+
+                    $users_subscriber_query = "SELECT * FROM users WHERE user_role = 'subscriber'";
+                    $users_subscriber_result = mysqli_query($connection, $users_subscriber_query);
+                    $users_subscriber_count = mysqli_num_rows($users_subscriber_result);
+                ?>
                 <div class="row">
                     <script type="text/javascript">
                         google.charts.load('current', {'packages':['bar']});
@@ -137,7 +154,13 @@
                         function drawChart() {
                             var data = google.visualization.arrayToDataTable([
                             ['Data', 'Count'],
-                            ['Posts', 1000]
+                            <?php
+                                $element_text = ['All Posts', 'Draft Posts', 'Published Posts', 'Comments', 'Unapproved Comments', 'Users', 'Subscribers', 'Categories'];
+                                $element_count = [$posts_count, $posts_draft_count, $posts_published_count, $comments_count, $comment_unapproved_count, $users_count, $users_subscriber_count, $categories_count];
+                                for ($i = 0; $i < 7; $i++) {
+                                    echo "['{$element_text[$i]}', {$element_count[$i]}],";
+                                }
+                            ?>
                             ]);
 
                             var options = {

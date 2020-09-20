@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -22,6 +24,18 @@
                 }
               ?>
               <li><a href="admin/">Admin</a></li>
+
+              <?php
+                // if (isset($_SESSION['user_role']) && isset($_GET['p_id'])) {
+                if (isset($_SESSION['user_role'])) {
+                    if (isset($_GET['p_id'])) {
+                        $postId = $_GET['p_id'];
+                        echo "<li><a href='admin/posts.php?source=edit_post&p_id=$postId'>Edit Post</a></li>";   
+                    }
+                }
+              
+              ?>
+
                 <!--
                 <li>
                     <a href="#">Services</a>

@@ -41,6 +41,8 @@ if (isset($_POST['edit_post'])) {
   $query .= "post_image = '{$postImage}' WHERE post_id = {$postId}";
   $result = mysqli_query($connection, $query);
   queryErrorHandler($result);
+
+  echo "<p>Post Updated. <a href='../post.php?p_id=$postId'>View Post</a></p>";
 }
 ?>
 
@@ -114,7 +116,7 @@ if (isset($_POST['edit_post'])) {
 
      <div class="form-group">
         <label for="post_content">Post Content</label>
-        <textarea class="form-control "name="post_content" id="" cols="30" rows="10"><?php echo $postContent; ?></textarea>
+        <textarea class="form-control "name="post_content" id="body" cols="30" rows="10"><?php echo $postContent; ?></textarea>
      </div>
 
       <div class="form-group">

@@ -24,6 +24,7 @@
                       echo '<h1>No Results!</h1>';
                     } else {
                       while ($row = mysqli_fetch_assoc($result)) {
+                        $postId = $row['post_id'];
                         $postTitle = $row['post_title'];
                         $postAuthor = $row['post_author'];
                         $postDate = $row['post_date'];
@@ -31,17 +32,19 @@
                         $postContent = substr($row['post_content'], 0, 100);
                       ?>
                       <h2>
-                          <a href="#"><?php echo $postTitle ?></a>
+                          <a href="post.php?p_id=<?php echo $postId; ?>"><?php echo $postTitle ?></a>
                       </h2>
                       <p class="lead">
                           by <a href="index.php"><?php echo $postAuthor ?></a>
                       </p>
                       <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postDate ?></p>
                       <hr>
-                      <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                      <a href="post.php?p_id=<?php echo $postId; ?>" style="display: block;">
+                        <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                      </a>
                       <hr>
                       <p><?php echo $postContent ?></p>
-                      <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                      <a class="btn btn-primary" href="post.php?p_id=<?php echo $postId; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                       <hr>
                   <?php } ?>
 
@@ -67,10 +70,12 @@
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postDate ?></p>
                     <hr>
-                    <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                    <a href="post.php?p_id=<?php echo $postId; ?>" style="display: block;">
+                      <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                    </a>
                     <hr>
                     <p><?php echo $postContent ?></p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a class="btn btn-primary" href="post.php?p_id=<?php echo $postId; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                     <hr>
 
                 <?php

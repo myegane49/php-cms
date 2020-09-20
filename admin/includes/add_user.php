@@ -18,6 +18,8 @@ if (isset($_POST['create_user'])) {
    $query .= "VALUES ('{$userFirstname}','{$userLastname}','{$userRole}', '{$username}','{$userEmail}','{$userPassword}') ";
    $result = mysqli_query($connection, $query);
    queryErrorHandler($result);
+
+   echo "User is created: " . "<a href='users.php'>View Users</a>";
 }
 ?>
 
@@ -52,7 +54,7 @@ if (isset($_POST['create_user'])) {
 
      <div class="form-group">
        <label>Password</label>
-       <input type="text" class="form-control" name="user_password">
+       <input type="password" class="form-control" name="user_password">
      </div>
 
      <!-- <div class="form-group">
