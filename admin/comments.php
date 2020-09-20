@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <?php include './includes/admin_head.php'; ?>
-</head>
+<?php include './includes/admin_head.php'; ?>
+
 <body>
     <div id="wrapper">
         <!-- Navigation -->
