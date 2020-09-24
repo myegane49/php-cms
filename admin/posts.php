@@ -41,10 +41,7 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <?php include './includes/admin_footer.php'; ?>
 
     <script src="../ckeditor/ckeditor.js"></script>
     <script>
@@ -54,6 +51,32 @@
             console.error( error );
         } );
       
+    </script>
+
+    <script>
+      $(document).ready(() => {
+        $('#selectAllBoxes').change(function() {
+          if (this.checked) {
+            $('.checkBoxes').each(function() {
+              this.checked = true;
+            })
+          } else {
+            $('.checkBoxes').each(function() {
+              this.checked = false;
+            })
+          }
+        })
+      })
+
+      document.querySelector('.user-table').addEventListener('click', (event) => {
+        if (event.target.className.includes('deleteBtn')) {
+          const postId = event.target.dataset.postid;
+          const sure = confirm('Are you sure you wanna delete?');
+          if (sure) {
+            location.href = './posts.php?delete=' + postId
+          }
+        } 
+      })
     </script>
 </body>
 </html>

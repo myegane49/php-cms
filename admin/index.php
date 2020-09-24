@@ -174,6 +174,7 @@
 
                             chart.draw(data, google.charts.Bar.convertOptions(options));
                         }
+
                     </script>
                     <div id="columnchart_material" style="width: auto; height: 500px;"></div>
                 </div>
@@ -184,9 +185,7 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-</body>
+ <?php include './includes/admin_footer.php'; ?>
+
+ </body>
 </html>

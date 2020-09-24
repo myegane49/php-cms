@@ -17,6 +17,9 @@
                   if (isset($_GET['p_id'])) {
                     $postId = $_GET['p_id'];
 
+                    $update_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = {$postId}";
+                    $views_result = mysqli_query($connection, $update_query);
+
                     $query = "SELECT * FROM posts WHERE post_id = {$postId}";
                     $result = mysqli_query($connection, $query);
                     $row = mysqli_fetch_assoc($result);
@@ -50,15 +53,20 @@
                     $commentEmail = $_POST['comment_email'];
                     $commentContent = $_POST['comment_content'];
 
-                    $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_date, comment_content, comment_status) ";
-                    $query .= "VALUES ({$postId}, '{$commentAuthor}', '{$commentEmail}', NOW(), '{$commentContent}', 'unapproved')";
-                    $result_comment = mysqli_query($connection, $query);
-                    if (!$result_comment) {
-                      echo mysqli_error($connection);
+                    if (!empty($commentAuthor) && !empty($commentEmail) && !empty($commentContent)) {
+                        $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_date, comment_content, comment_status) ";
+                        $query .= "VALUES ({$postId}, '{$commentAuthor}', '{$commentEmail}', NOW(), '{$commentContent}', 'unapproved')";
+                        $result_comment = mysqli_query($connection, $query);
+                        if (!$result_comment) {
+                          echo mysqli_error($connection);
+                        }
+    
+                        $post_query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$postId}";
+                        $result_update_post = mysqli_query($connection, $post_query);
+                    } else {
+                        echo "<script>alert('Fields cannot be empty!')</script>";
                     }
 
-                    $post_query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$postId}";
-                    $result_update_post = mysqli_query($connection, $post_query);
                   }
                 ?>
                 <!-- Comments Form -->

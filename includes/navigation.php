@@ -20,10 +20,12 @@
                 $result = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($result)) {
                   $catTitle = $row['cat_title'];
-                  echo "<li><a href='#'>$catTitle</a></li>";
+                  $cat_id = $row['cat_id'];
+                  echo "<li><a href='index.php?cat_id=$cat_id'>$catTitle</a></li>";
                 }
               ?>
               <li><a href="admin/">Admin</a></li>
+              <li><a href="registration.php">Register</a></li>
 
               <?php
                 // if (isset($_SESSION['user_role']) && isset($_GET['p_id'])) {

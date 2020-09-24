@@ -29,6 +29,7 @@
   <link href="css/sb-admin.css" rel="stylesheet">
   <!-- Custom Fonts -->
   <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="../css/loader.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -37,4 +38,6 @@
   <![endif]-->
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  
 </head>

@@ -18,6 +18,8 @@ if (isset($_POST['create_post'])) {
    $query .= "VALUES ({$post_category_id},'{$post_title}','{$post_author}', NOW(),'{$post_image}','{$post_content}','{$post_tags}', '{$post_status}') ";
    $result = mysqli_query($connection, $query);
    queryErrorHandler($result);
+
+   echo "<p>Post Added</p>";
 }
 ?>
 
