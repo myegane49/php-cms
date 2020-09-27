@@ -33,14 +33,17 @@ if (isset($_POST['edit_user'])) {
   //   move_uploaded_file($postImageTemp, "../images/$postImage");
   // }
 
-  $salt_query = "SELECT randSalt FROM users LIMIT 1";
-  $salt_result = mysqli_query($connection, $salt_query);
-  if (!$salt_result) {
-   echo mysqli_error($salt_result);
+//   $salt_query = "SELECT randSalt FROM users LIMIT 1";
+//   $salt_result = mysqli_query($connection, $salt_query);
+//   if (!$salt_result) {
+//    echo mysqli_error($salt_result);
+//   }
+//   $row = mysqli_fetch_assoc($salt_result);
+//   $salt = $row['randSalt'];
+  if ($userPassword != $user_password) {
+   //   $userPassword = crypt($userPassword, $salt);
+     $userPassword = password_hash($userPassword, PASSWORD_BCRYPT, ['cost' => 10]);
   }
-  $row = mysqli_fetch_assoc($salt_result);
-  $salt = $row['randSalt'];
-  $userPassword = crypt($userPassword, $salt);
 
   $query = "UPDATE users SET user_firstname = '{$userFirstname}', user_lastname = '{$userLastname}', user_role = '{$userRole}', ";
   $query .= "username = '{$userName}', user_email = '{$userEmail}', user_password = '{$userPassword}' ";

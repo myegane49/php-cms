@@ -22,9 +22,10 @@ if (isset($_POST['login'])) {
   $db_userRole = $row['user_role'];
   $db_userPassword = $row['user_password'];
 
-  $password = crypt($password, $db_userPassword);
+  // $password = crypt($password, $db_userPassword);
 
-  if ($username === $db_username && $password === $db_userPassword) {
+  // if ($username === $db_username && $password === $db_userPassword) {
+  if ($username === $db_username && password_verify($password, $db_userPassword)) {
     $_SESSION['username'] = $db_username;
     $_SESSION['firstname'] = $db_userFirstname;
     $_SESSION['lastname'] = $db_userLastname;

@@ -19,15 +19,17 @@
             $username = mysqli_real_escape_string($connection, $username);
             $email = mysqli_real_escape_string($connection, $email);
             $password = mysqli_real_escape_string($connection, $password);
+
+            $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 10]);
     
-            $query = "SELECT randSalt FROM users LIMIT 1";
-            $salt_result = mysqli_query($connection, $query);
-            if (!$salt_result) {
-                echo mysqli_error($salt_result);
-            } else {
-                $row = mysqli_fetch_assoc($salt_result);
-                $salt = $row['randSalt'];
-                $password = crypt($password, $salt);
+            // $query = "SELECT randSalt FROM users LIMIT 1";
+            // $salt_result = mysqli_query($connection, $query);
+            // if (!$salt_result) {
+            //     echo mysqli_error($salt_result);
+            // } else {
+                // $row = mysqli_fetch_assoc($salt_result);
+                // $salt = $row['randSalt'];
+                // $password = crypt($password, $salt);
     
                 $insert_query = "INSERT INTO users (username, user_email, user_password) VALUES ('{$username}', '{$email}', '{$password}')";
                 $insert_result = mysqli_query($connection, $insert_query);
@@ -36,7 +38,7 @@
                 } else {
                     $message = '<h5 class="text-center text-success">Registeration Successfull</h5>';
                 }
-            }
+            // }
         } else {
             $message = '<h5 class="text-center text-danger">These fields cannot be empty</h5>';
         }

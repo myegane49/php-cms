@@ -44,6 +44,10 @@ if (isset($_POST['update_profile'])) {
   //   move_uploaded_file($postImageTemp, "../images/$postImage");
   // }
 
+  if ($userPassword != $user_password) {
+    $userPassword = password_hash($userPassword, PASSWORD_BCRYPT, ['cost' => 10]);
+  }
+
   $query = "UPDATE users SET user_firstname = '{$userFirstname}', user_lastname = '{$userLastname}', user_role = '{$userRole}', ";
   $query .= "username = '{$userName}', user_email = '{$userEmail}', user_password = '{$userPassword}' ";
   $query .= "WHERE user_id = {$userId}";

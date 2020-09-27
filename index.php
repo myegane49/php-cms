@@ -14,22 +14,39 @@
             <div class="col-md-8">
                 <?php include './includes/header.php'; ?>
                 <?php
-                  $query = '';
-                  $result = null;
-                  $count = 0;
+                  $posts_per_page = 3;
+                  $page = "";
+                  if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                  }
+
+                  if ($page === "" || $page === 1) {
+                    $skip = 0;
+                  } else {
+                    $skip = ($page * $posts_per_page) - $posts_per_page;
+                  }
 
                   if (isset($_POST['submitSearch'])) {
                     $search = $_POST['search'];
-                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published'";
+                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published'";
                   } else if (isset($_GET['cat_id'])) {
                     $catId = $_GET['cat_id'];
-                    $query = "SELECT * FROM posts WHERE post_category_id = {$catId} AND post_status = 'published'";
+                    $query = "SELECT * FROM posts WHERE post_category_id = {$catId} AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId} AND post_status = 'published'";
                   } else if (isset($_GET['author'])) {
                     $author = $_GET['author'];
-                    $query = "SELECT * FROM posts WHERE post_author = '{$author}' AND post_status = 'published'";
+                    $query = "SELECT * FROM posts WHERE post_author = '{$author}' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_author = '{$author}' AND post_status = 'published'";
                   } else {
-                    $query = "SELECT * FROM posts WHERE post_status = 'published'";
+                    $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_status = 'published'";
                   }
+
+                  $count_result = mysqli_query($connection, $posts_count_query);
+                  $row = mysqli_fetch_assoc($count_result);
+                  $posts_count = $row['postCount'];
+                  $pages_count = ceil($posts_count / $posts_per_page);
 
                   $result = mysqli_query($connection, $query);
                   $count = mysqli_num_rows($result);
@@ -68,6 +85,35 @@
                     <li class="previous">
                         <a href="#">&larr; Older</a>
                     </li>
+                    <?php
+                    if (isset($_GET['cat_id'])) {
+                      $catId = $_GET['cat_id'];
+                      for ($i = 1; $i <= $pages_count; $i++) {   
+                        if ($i == $page || ($i === 1 && $page == '')) {
+                          echo "<li><a class='active_link' href='index.php?cat_id=$catId&page={$i}'>{$i}</a></li>";
+                        } else {                    
+                          echo "<li><a href='index.php?cat_id=$catId&page={$i}'>{$i}</a></li>";
+                        }
+                      }
+                    } else if (isset($_GET['author'])) {
+                      $author = $_GET['author'];
+                      for ($i = 1; $i <= $pages_count; $i++) {
+                        if ($i == $page || ($i === 1 && $page == '')) {
+                          echo "<li><a class='active_link' href='index.php?author=$author&page={$i}'>{$i}</a></li>";
+                        } else {                
+                          echo "<li><a href='index.php?author=$author&page={$i}'>{$i}</a></li>";
+                        }
+                      }
+                    } else {
+                      for ($i = 1; $i <= $pages_count; $i++) {   
+                        if ($i == $page || ($i === 1 && $page == '')) {
+                          echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                        } else {
+                          echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                        }                    
+                      }
+                    }
+                    ?>
                     <li class="next">
                         <a href="#">Newer &rarr;</a>
                     </li>
