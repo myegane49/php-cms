@@ -51,9 +51,11 @@
 
 <?php
 if (isset($_GET['delete'])) {
-  $userId = $_GET['delete'];
-  $query = "DELETE FROM users WHERE user_id = {$userId}";
-  $result = mysqli_query($connection, $query);
-  header("location: users.php");
+  if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+    $userId = $_GET['delete'];
+    $query = "DELETE FROM users WHERE user_id = {$userId}";
+    $result = mysqli_query($connection, $query);
+    header("location: users.php");
+  }
 }
 ?>

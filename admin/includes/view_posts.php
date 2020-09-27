@@ -79,7 +79,7 @@
           $postStatus = $row['post_status'];
           $postImage = $row['post_image'];
           $postTags = $row['post_tags'];
-          $postCommentCount = $row['post_comment_count'];
+          // $postCommentCount = $row['post_comment_count'];
           $postDate = $row['post_date'];
           $postViews = $row['post_views_count'];
 
@@ -98,7 +98,13 @@
           echo "<td>$postStatus</td>";
           echo "<td><img src='../images/$postImage' width='100'></td>";
           echo "<td>$postTags</td>";
-          echo "<td>$postCommentCount</td>";
+
+          // echo "<td>$postCommentCount</td>";
+          $comment_count_query = "SELECT COUNT(*) AS comment_count_col FROM comments WHERE comment_post_id = $postId";
+          $comment_count_result = mysqli_query($connection, $comment_count_query);
+          $comment_count = mysqli_fetch_assoc($comment_count_result)['comment_count_col'];
+          echo "<td><a href='comments.php?source=post_comments&post_id=$postId'>$comment_count</a></td>";
+
           echo "<td>$postDate</td>";
           echo "<td>$postViews <a href='posts.php?reset=$postId'>reset</a></td>";
           echo "<td><a href='../post.php?p_id=$postId'>View Post</a></td>";

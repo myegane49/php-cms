@@ -61,8 +61,8 @@
                           echo mysqli_error($connection);
                         }
     
-                        $post_query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$postId}";
-                        $result_update_post = mysqli_query($connection, $post_query);
+                        // $post_query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$postId}";
+                        // $result_update_post = mysqli_query($connection, $post_query);
                     } else {
                         echo "<script>alert('Fields cannot be empty!')</script>";
                     }
