@@ -12,7 +12,7 @@
         <div class="row">
             <!-- Blog Entries Column -->
             <div class="col-md-8">
-                <?php include './includes/header.php'; ?>
+                <!-- <?php include './includes/header.php'; ?> -->
                 <?php
                   $posts_per_page = 3;
                   $page = "";
@@ -28,19 +28,44 @@
 
                   if (isset($_POST['submitSearch'])) {
                     $search = $_POST['search'];
-                    $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
-                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published'";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+                      $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_tags LIKE '%$search%'";
+                    } else {
+                      $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published'";
+                    }
                   } else if (isset($_GET['cat_id'])) {
                     $catId = $_GET['cat_id'];
-                    $query = "SELECT * FROM posts WHERE post_category_id = {$catId} AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
-                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId} AND post_status = 'published'";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+                      $query = "SELECT * FROM posts WHERE post_category_id = {$catId} LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId}";
+                    } else {
+                      $query = "SELECT * FROM posts WHERE post_category_id = {$catId} AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId} AND post_status = 'published'";
+                    }
+                    
+                    
                   } else if (isset($_GET['author'])) {
                     $author = $_GET['author'];
-                    $query = "SELECT * FROM posts WHERE post_author = '{$author}' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
-                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_author = '{$author}' AND post_status = 'published'";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+                      $query = "SELECT * FROM posts WHERE post_author = '{$author}' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_author = '{$author}'";
+                    } else {
+                      $query = "SELECT * FROM posts WHERE post_author = '{$author}' AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_author = '{$author}' AND post_status = 'published'";
+                    }
+                    
+                    
                   } else {
-                    $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
-                    $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_status = 'published'";
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+                      $query = "SELECT * FROM posts LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts";
+                    } else {
+                      $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                      $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_status = 'published'";
+                    }
+                    
                   }
 
                   $count_result = mysqli_query($connection, $posts_count_query);
@@ -82,9 +107,9 @@
 
                 <!-- Pager -->
                 <ul class="pager">
-                    <li class="previous">
+                    <!-- <li class="previous">
                         <a href="#">&larr; Older</a>
-                    </li>
+                    </li> -->
                     <?php
                     if (isset($_GET['cat_id'])) {
                       $catId = $_GET['cat_id'];
@@ -114,9 +139,9 @@
                       }
                     }
                     ?>
-                    <li class="next">
+                    <!-- <li class="next">
                         <a href="#">Newer &rarr;</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <!-- Blog Sidebar Widgets Column -->

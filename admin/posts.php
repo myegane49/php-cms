@@ -71,10 +71,16 @@
       document.querySelector('.user-table').addEventListener('click', (event) => {
         if (event.target.className.includes('deleteBtn')) {
           const postId = event.target.dataset.postid;
-          const sure = confirm('Are you sure you wanna delete?');
-          if (sure) {
+          // const sure = confirm('Are you sure you wanna delete?');
+          // if (sure) {
+          //   location.href = './posts.php?delete=' + postId
+          // }
+
+          $('#confirmModal').modal('show');
+          document.querySelector('.modal_delete_link').addEventListener('click', () => {
             location.href = './posts.php?delete=' + postId
-          }
+          })
+
         } 
       })
     </script>

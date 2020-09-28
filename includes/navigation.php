@@ -21,13 +21,23 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                   $catTitle = $row['cat_title'];
                   $cat_id = $row['cat_id'];
-                  echo "<li><a href='index.php?cat_id=$cat_id'>$catTitle</a></li>";
+                  $active_class = null;
+                  $currentCategory = $_GET['cat_id'];
+                  if ($cat_id == $currentCategory) {
+                    $active_class = 'active';
+                  }
+                  echo "<li class='$active_class'><a href='index.php?cat_id=$cat_id'>$catTitle</a></li>";
                 }
+
+                $active_page = basename($_SERVER['PHP_SELF']);
+                
               ?>
               <li><a href="admin/">Admin</a></li>
-              <li><a href="registration.php">Register</a></li>
+              <li class="<?php echo $active_page == 'registration.php' ? 'active': null; ?>"><a href="registration.php">Register</a></li>
+              <li class="<?php echo $active_page == 'contact.php' ? 'active': null; ?>"><a href="contact.php">Contact</a></li>
 
               <?php
+                
                 // if (isset($_SESSION['user_role']) && isset($_GET['p_id'])) {
                 if (isset($_SESSION['user_role'])) {
                     if (isset($_GET['p_id'])) {

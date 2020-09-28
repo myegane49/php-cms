@@ -17,18 +17,29 @@
 
     <!-- Login -->
     <div class="well">
-        <h4>Login</h4>
-        <form action="includes/login.php" method="post">
-          <div class="form-group">
-            <input type="text" class="form-control" name="username" placeholder="Enter Username">
-          </div>
-          <div class="input-group">
-            <input type="password" class="form-control" name="password" placeholder="Enter Password">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" name="login" type="submit">Submit</button>
-            </span>
-          </div>
-        </form>
+      <?php
+        if (isset($_SESSION['user_role'])) {
+          $username = $_SESSION['username'];
+          echo "<h4>Logged in as $username</h4>";
+          echo "<a class='btn btn-primary' href='includes/logout.php'>Logout</a>";
+        } else {
+        ?>
+          <h4>Login</h4>
+          <form action="includes/login.php" method="post">
+            <div class="form-group">
+              <input type="text" class="form-control" name="username" placeholder="Enter Username">
+            </div>
+            <div class="input-group">
+              <input type="password" class="form-control" name="password" placeholder="Enter Password">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" name="login" type="submit">Submit</button>
+              </span>
+            </div>
+          </form>
+
+        <?php
+          }
+        ?>
         <!-- /.input-group -->
     </div>
 

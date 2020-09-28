@@ -28,6 +28,12 @@
                     $postDate = $row['post_date'];
                     $postImage = $row['post_image'];
                     $postContent = $row['post_content'];
+                    $postStatus = $row['post_status'];
+
+                    if ($postStatus === 'draft' && $_SESSION['user_role'] !== 'admin') {
+                        echo 'the post is not available';
+                    } else {
+                    
                   ?>
 
                     <h2>
@@ -43,7 +49,7 @@
                     <p><?php echo $postContent ?></p>
                     <hr>
 
-                <?php } ?>
+                <?php } } ?>
 
                 <!-- Blog Comments -->
                 <?php
