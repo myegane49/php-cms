@@ -88,4 +88,65 @@ function deleteCategories() {
     header("location: categories.php");
   }
 }
+
+function is_admin($username = '') {
+  global $connection;
+  $query = "SELECT user_role FROM users WHERE username = '$username'";
+  $result = mysqli_query($connection, $query);
+  $row = mysqli_fetch_assoc($result);
+
+  if ($row['user_role'] == 'admin') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function username_exists($username) {
+  global $connection;
+
+  $query = "SELECT * FROM users WHERE username = '$username'";
+  $result = mysqli_query($connection, $query);
+
+  if (mysqli_num_rows($result) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function email_exists($email) {
+  global $connection;
+
+  $query = "SELECT * FROM users WHERE user_email = '$email'";
+  $result = mysqli_query($connection, $query);
+
+  if (mysqli_num_rows($result) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isRequestMethod($method = null) {
+  if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
+    return true;
+  }
+
+  return false;
+}
+
+function isLoggedIn() {
+  if(isset($_SESSION['user_role'])) {
+    return true;
+  }
+
+  return false;
+}
+
+function checkLoggedInRedirect($redirectTo) {
+  if (isLoggedIn()) {
+    header("location: $redirectTo");
+  }
+}
 ?>

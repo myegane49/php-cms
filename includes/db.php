@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <?php
 $db['host'] = 'localhost';
 $db['user'] = 'phpuser';

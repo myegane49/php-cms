@@ -3,6 +3,7 @@
 <head>
   <?php include './includes/db.php'; ?>
   <?php include './includes/head.php'; ?>
+  <?php include './admin/functions.php'; ?>
 </head>
 <body>
     <!-- Navigation -->
@@ -16,6 +17,9 @@
                 <?php
                   $posts_per_page = 3;
                   $page = "";
+                  $published = 'published';
+                  $statement = '';
+                  
                   if (isset($_GET['page'])) {
                     $page = $_GET['page'];
                   }
@@ -39,9 +43,11 @@
                     $catId = $_GET['cat_id'];
                     if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
                       $query = "SELECT * FROM posts WHERE post_category_id = {$catId} LIMIT {$skip}, {$posts_per_page}";
+                      // $statement = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_category_id = ? LIMIT {$skip}, {$posts_per_page}");                      
                       $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId}";
                     } else {
                       $query = "SELECT * FROM posts WHERE post_category_id = {$catId} AND post_status = 'published' LIMIT {$skip}, {$posts_per_page}";
+                      // $statement = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? LIMIT {$skip}, {$posts_per_page}");
                       $posts_count_query = "SELECT COUNT(*) AS postCount FROM posts WHERE post_category_id = {$catId} AND post_status = 'published'";
                     }
                     
@@ -76,10 +82,20 @@
                   $result = mysqli_query($connection, $query);
                   $count = mysqli_num_rows($result);
 
+                  // if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {                   
+                  //   mysqli_stmt_bind_param($statement, "i", $catId);                   
+                  // } else {            
+                  //   mysqli_stmt_bind_param($statement, "is", $catId, $published);
+                  // }                 
+                  // mysqli_stmt_execute($statement);
+                  // mysqli_stmt_bind_result($statement, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
+                  // $count = mysqli_stmt_num_rows($statement);
+                  
                   if ($count == 0) {
-                    echo '<h1>No Results!</h1>';
+                    echo '<h1>No Results!</h1>';                  
                   } else {
                     while ($row = mysqli_fetch_assoc($result)) {
+                    // while (mysqli_stmt_fetch($statement)) {
                       $postId = $row['post_id'];
                       $postTitle = $row['post_title'];
                       $postAuthor = $row['post_author'];
@@ -103,7 +119,10 @@
                       <p><?php echo $postContent ?></p>
                       <a class="btn btn-primary" href="post.php?p_id=<?php echo $postId; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                       <hr>
-                  <?php }} ?>
+                  <?php 
+                    }
+                  }
+                  ?>
 
                 <!-- Pager -->
                 <ul class="pager">

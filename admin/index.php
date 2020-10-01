@@ -31,9 +31,9 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                 <?php 
-                                    $posts_query = "SELECT * FROM posts";
+                                    $posts_query = "SELECT COUNT(*) AS posts_count FROM posts";
                                     $posts_result = mysqli_query($connection, $posts_query);
-                                    $posts_count = mysqli_num_rows($posts_result)
+                                    $posts_count = mysqli_fetch_assoc($posts_result)['posts_count'];
                                 ?>
                                 <div class='huge'><?php echo $posts_count; ?></div>
                                         <div>Posts</div>
@@ -58,9 +58,9 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                     <?php 
-                                        $comments_query = "SELECT * FROM comments";
+                                        $comments_query = "SELECT COUNT(*) AS comments_count FROM comments";
                                         $comments_result = mysqli_query($connection, $comments_query);
-                                        $comments_count = mysqli_num_rows($comments_result)
+                                        $comments_count = mysqli_fetch_assoc($comments_result)['comments_count'];
                                     ?>
                                     <div class='huge'><?php echo $comments_count; ?></div>
                                     <div>Comments</div>
@@ -85,9 +85,9 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                     <?php 
-                                        $users_query = "SELECT * FROM users";
+                                        $users_query = "SELECT COUNT(*) AS users_count FROM users";
                                         $users_result = mysqli_query($connection, $users_query);
-                                        $users_count = mysqli_num_rows($users_result)
+                                        $users_count = mysqli_fetch_assoc($users_result)['users_count'];
                                     ?>
                                     <div class='huge'><?php echo $users_count; ?></div>
                                         <div> Users</div>
@@ -112,9 +112,9 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                     <?php 
-                                        $categories_query = "SELECT * FROM categories";
+                                        $categories_query = "SELECT COUNT(*) AS category_count FROM categories";
                                         $categories_result = mysqli_query($connection, $categories_query);
-                                        $categories_count = mysqli_num_rows($categories_result)
+                                        $categories_count = mysqli_fetch_assoc($categories_result)['category_count'];
                                     ?>
                                         <div class='huge'><?php echo $categories_count; ?></div>
                                         <div>Categories</div>
@@ -133,21 +133,21 @@
                 </div>
                 <!-- /.row -->
                 <?php 
-                    $posts_draft_query = "SELECT * FROM posts WHERE post_status = 'draft'";
+                    $posts_draft_query = "SELECT COUNT(*) AS item_count FROM posts WHERE post_status = 'draft'";
                     $posts_draft_result = mysqli_query($connection, $posts_draft_query);
-                    $posts_draft_count = mysqli_num_rows($posts_draft_result);
+                    $posts_draft_count = mysqli_fetch_assoc($posts_draft_result)['item_count'];
 
-                    $posts_published_query = "SELECT * FROM posts WHERE post_status = 'published'";
+                    $posts_published_query = "SELECT COUNT(*) AS item_count FROM posts WHERE post_status = 'published'";
                     $posts_published_result = mysqli_query($connection, $posts_published_query);
-                    $posts_published_count = mysqli_num_rows($posts_published_result);
+                    $posts_published_count = mysqli_fetch_assoc($posts_published_result)['item_count'];
 
-                    $comment_unapproved_query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
+                    $comment_unapproved_query = "SELECT COUNT(*) AS item_count FROM comments WHERE comment_status = 'unapproved'";
                     $comment_unapproved_result = mysqli_query($connection, $comment_unapproved_query);
-                    $comment_unapproved_count = mysqli_num_rows($comment_unapproved_result);
+                    $comment_unapproved_count = mysqli_fetch_assoc($comment_unapproved_result)['item_count'];
 
-                    $users_subscriber_query = "SELECT * FROM users WHERE user_role = 'subscriber'";
+                    $users_subscriber_query = "SELECT COUNT(*) AS item_count FROM users WHERE user_role = 'subscriber'";
                     $users_subscriber_result = mysqli_query($connection, $users_subscriber_query);
-                    $users_subscriber_count = mysqli_num_rows($users_subscriber_result);
+                    $users_subscriber_count = mysqli_fetch_assoc($users_subscriber_result)['item_count'];
                 ?>
                 <div class="row">
                     <script type="text/javascript">

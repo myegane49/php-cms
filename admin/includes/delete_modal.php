@@ -17,7 +17,11 @@
         <h3 class="text-center">Are you sure you want to delete?</h3>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger modal_delete_link">Delete</button>
+        <form action="" method="post" style="display: inline;">
+          <input type="hidden" name="post_id" class="post_delete_input">
+          <input type="submit" class="btn btn-danger" value="Delete" name="delete">
+        </form>
+        <!-- <button type="button" class="btn btn-danger modal_delete_link">Delete</button> -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>

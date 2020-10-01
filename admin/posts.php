@@ -77,9 +77,10 @@
           // }
 
           $('#confirmModal').modal('show');
-          document.querySelector('.modal_delete_link').addEventListener('click', () => {
-            location.href = './posts.php?delete=' + postId
-          })
+          document.querySelector('.post_delete_input').value = postId
+          // document.querySelector('.modal_delete_link').addEventListener('click', () => {
+          //   location.href = './posts.php?delete=' + postId
+          // })
 
         } 
       })

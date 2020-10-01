@@ -32,7 +32,13 @@
                 $active_page = basename($_SERVER['PHP_SELF']);
                 
               ?>
-              <li><a href="admin/">Admin</a></li>
+
+              <?php if (isLoggedIn()): ?>
+                <li><a href="admin/">Admin</a></li>
+                <li><a href="includes/logout.php">Logout</a></li>
+              <?php else: ?>
+                <li><a href="login_page.php">Login</a></li>
+              <?php endif; ?>
               <li class="<?php echo $active_page == 'registration.php' ? 'active': null; ?>"><a href="registration.php">Register</a></li>
               <li class="<?php echo $active_page == 'contact.php' ? 'active': null; ?>"><a href="contact.php">Contact</a></li>
 
