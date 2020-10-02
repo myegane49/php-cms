@@ -1,0 +1,15 @@
+{
+    "name": "myegane49/cms",
+    "authors": [
+        {
+            "name": "Mohammad Ahmady Yeganeh",
+            "email": "m.yegane49@protonmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    },
+    "autoload": {
+        "classmap": ["classes"]
+    }
+}

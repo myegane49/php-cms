@@ -14,6 +14,13 @@
 <!-- Navigation -->
 <?php include './includes/navigation.php'; ?>
 
+<?php // require './classes/Config.php'; ?>
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+?>
+
 <?php
   if (isRequestMethod('get') && !isset($_GET['forgot'])) {
     header("location index.php");
@@ -29,6 +36,39 @@
         mysqli_stmt_bind_param($stmt, "ss", $token, $email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+
+        // Load Composer's autoloader
+        require 'vendor/autoload.php';
+
+        // Instantiation and passing `true` enables exceptions
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host       = Config::SMTP_HOST;                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = Config::SMTP_USERNAME;                     // SMTP username
+            $mail->Password   = Config::SMTP_PASSWORD;                               // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+            $mail->Port       = Config::SMTP_PORT;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+            //Recipients
+            $mail->setFrom('m.yegane49@protonmail.com', 'myegane49');
+            $mail->addAddress($email);     // Add a recipient
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Here is the subject';
+            $mail->Body    = 'این پیام بدنه ایمیل است <b>in bold!</b>';
+
+            $mail->send();
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
       } else {
         echo mysqli_error($connection);
       }
