@@ -3,6 +3,7 @@
 <head>
   <?php include './includes/db.php'; ?>
   <?php include './includes/head.php'; ?>
+  <?php include './admin/functions.php'; ?>
 </head>
 <body>
     <!-- Navigation -->
@@ -44,7 +45,7 @@
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postDate ?></p>
                     <hr>
-                    <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="">
+                    <img class="img-responsive" src="images/<?php echo postImage($postImage); ?>" alt="">
                     <hr>
                     <p><?php echo $postContent ?></p>
                     <hr>

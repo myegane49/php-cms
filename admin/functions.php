@@ -149,4 +149,12 @@ function checkLoggedInRedirect($redirectTo) {
     header("location: $redirectTo");
   }
 }
+
+function postImage($image = '') {
+  if (!$image) {
+    return 'placeholder-image.jpg';
+  } else {
+    return $image;
+  }
+}
 ?>

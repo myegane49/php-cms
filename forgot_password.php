@@ -62,10 +62,10 @@ use PHPMailer\PHPMailer\Exception;
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Here is the subject';
-            $mail->Body    = 'این پیام بدنه ایمیل است <b>in bold!</b>';
+            $mail->Body    = "<p>Please click to reset your password</p><a href='localhost:8080/reset.php?email=$email&token=$token'>link</a>";
 
             $mail->send();
-            echo 'Message has been sent';
+            $emailSent = true;
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
@@ -88,6 +88,8 @@ use PHPMailer\PHPMailer\Exception;
                     <div class="panel-body">
                         <div class="text-center">
 
+                          <?php if(!isset($emailSent)): ?>
+
                           <h3><i class="fa fa-lock fa-4x"></i></h3>
                           <h2 class="text-center">Forgot Password?</h2>
                           <p>You can reset your password here.</p>
@@ -102,7 +104,7 @@ use PHPMailer\PHPMailer\Exception;
                                       </div>
                                   </div>
                                   <div class="form-group">
-                                      <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
+                                      <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Send Link to Email" type="submit">
                                   </div>
 
                                   <input type="hidden" class="hide" name="token" id="token" value="">
@@ -110,6 +112,11 @@ use PHPMailer\PHPMailer\Exception;
 
                           </div><!-- Body-->
 
+                          <?php else: ?>
+
+                          <h3>Please check your email</h3>
+
+                          <?php endif; ?>
                         </div>
                     </div>
                 </div>
