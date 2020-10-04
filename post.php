@@ -8,6 +8,26 @@
 <body>
     <!-- Navigation -->
     <?php include './includes/navigation.php'; ?>
+
+    <?php 
+        $user_id = loggedInUserId();
+
+        if (isset($_POST['like_click'])) {
+            $post_id = $_POST['post_id'];
+            $user_id = $_POST['user_id'];
+
+            if (userLikedThisPost($post_id, $user_id)) {
+                $delete_like_query = "DELETE FROM likes WHERE post_id = $post_id AND user_id = $user_id";
+                $delete_like_result = mysqli_query($connection, $delete_like_query);
+            } else {
+                $insert_like_query = "INSERT INTO likes (post_id, user_id) VALUES ($post_id, $user_id)";
+                $insert_like_result = mysqli_query($connection, $insert_like_query);
+            }
+
+
+        }
+
+    ?>
     <!-- Page Content -->
     <div class="container">
         <div class="row">
@@ -17,6 +37,11 @@
                 <?php
                   if (isset($_GET['p_id'])) {
                     $postId = $_GET['p_id'];
+                    $post_is_liked = false;
+                    $likes_num = getPostLike($postId);
+                    if (userLikedThisPost($postId, $user_id)) {
+                        $post_is_liked = true;
+                    }
 
                     $update_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = {$postId}";
                     $views_result = mysqli_query($connection, $update_query);
@@ -52,6 +77,24 @@
 
                 <?php } } ?>
 
+                <!-- LIKE -->
+                <?php if (isLoggedIn()): ?>
+                <div class="row">
+                    <p class="pull-right like-btn" data-toggle='tooltip' data-placement="top" title="<?php echo $post_is_liked ? 'I liked this before' : 'Want to like it?'; ?>">
+                        <span class="glyphicon glyphicon-thumbs-down" style="display: <?php echo $post_is_liked ? 'inline' : 'none'; ?>;"></span>
+                        <span class="glyphicon glyphicon-thumbs-up" style="display: <?php echo $post_is_liked ? 'none' : 'inline'; ?>;"></span>
+                        <a class="like" style="cursor: pointer;">
+                            <?php echo $post_is_liked ? ' Unlike': ' Like'; ?>
+                            
+                        </a>
+                    </p>
+                </div>
+                <?php endif; ?>
+                
+                <div class="row">
+                    <p class="pull-right likes_num">Likes: <?php echo $likes_num; ?></p>
+                </div>
+                <hr>
                 <!-- Blog Comments -->
                 <?php
                   if(isset($_POST['create_comment'])) {
@@ -76,6 +119,8 @@
 
                   }
                 ?>
+                
+                
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
@@ -165,5 +210,48 @@
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        let post_is_liked = "<?php echo $post_is_liked ? 'true' : 'false'; ?>";
+        let likes_num = +"<?php echo $likes_num; ?>"
+        document.querySelector('.like').addEventListener('click', () => {
+            const postId = +"<?php echo $postId; ?>"
+            const userId = +"<?php echo $user_id; ?>";
+            const formData = new FormData();
+            formData.set('like_click', 1);
+            formData.set('post_id', postId);
+            formData.set('user_id', userId);
+
+            fetch(`post.php?p_id=${postId}` , {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                if (post_is_liked == 'true') {
+                    document.querySelector('.glyphicon-thumbs-down').style.display = 'none'
+                    document.querySelector('.glyphicon-thumbs-up').style.display = 'inline'
+                
+                    post_is_liked = 'false'
+                    document.querySelector('.like').textContent = 'Like'
+            
+                    likes_num != 0 ? likes_num -= 1 : likes_num = 0;
+                    document.querySelector('.likes_num').textContent = `Likes: ${likes_num}`
+                    document.querySelector('.like-btn').setAttribute('data-original-title', 'Want to like it?')
+                } else {
+                    document.querySelector('.glyphicon-thumbs-down').style.display = 'inline'
+                    document.querySelector('.glyphicon-thumbs-up').style.display = 'none'
+                    
+                    post_is_liked = 'true'
+                    document.querySelector('.like').textContent = 'Unlike';
+                    likes_num += 1;
+                    document.querySelector('.likes_num').textContent = `Likes: ${likes_num}`
+                    document.querySelector('.like-btn').setAttribute('data-original-title', 'I liked this before')
+                }
+                
+                
+            })
+        });
+
+        $("[data-toggle='tooltip']").tooltip()
+    </script>
 </body>
 </html>

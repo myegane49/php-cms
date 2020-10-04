@@ -85,30 +85,52 @@
         }
     }
 ?>
+
+<?php
+    if (isset($_GET['lang'])) {
+        $_SESSION['lang'] = $_GET['lang'];
+    }
+
+    if (isset($_SESSION['lang'])) {
+        $lang = $_SESSION['lang'];
+        include "includes/languages/$lang.php";
+    } else {
+        include "includes/languages/en.php";
+    }
+?>
     <!-- Page Content -->
     <div class="container">
+        <form action="" class="navbar-form navbar-right" id="lang-form" method="get">
+            <div class="form-group">
+                <select name="lang" class="form-control lang-input">
+                    <option <?php echo $lang == 'en'? 'selected': null ?> value="en">English</option>
+                    <option <?php echo $lang == 'fa'? 'selected': null ?> value="fa">فارسی</option>
+                </select>
+            </div>
+            
+        </form>
         <section id="login">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6 col-xs-offset-3">
                         <div class="form-wrap">
-                        <h1>Register</h1>
+                        <h1><?php echo REGISTER; ?></h1>
                             <form role="form" action="" method="post" id="login-form" autocomplete="off">
                                 <?php echo $message ?>
                                 <div class="form-group">
                                     <label for="username" class="sr-only">username</label>
-                                    <input autocomplete="on" type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username" value="<?php echo isset($username) ? $username : ''; ?>">
+                                    <input autocomplete="on" type="text" name="username" id="username" class="form-control" placeholder="<?php echo USERNAME; ?>" value="<?php echo isset($username) ? $username : ''; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="sr-only">Email</label>
-                                    <input autocomplete="on" type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com" value="<?php echo isset($email) ? $email : ''; ?>">
+                                    <input autocomplete="on" type="email" name="email" id="email" class="form-control" placeholder="<?php echo EMAIL; ?>" value="<?php echo isset($email) ? $email : ''; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="sr-only">Password</label>
-                                    <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                                    <input type="password" name="password" id="key" class="form-control" placeholder="<?php echo PASSWORD; ?>">
                                 </div>
                         
-                                <input type="submit" name="register" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
+                                <input type="submit" name="register" id="btn-login" class="btn btn-primary btn-lg btn-block" value="Register">
                             </form>
                         
                         </div>
@@ -125,5 +147,12 @@
     <script src="js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script>
+         
+        document.querySelector('.lang-input').addEventListener('change', () => {
+            document.getElementById('lang-form').submit()
+        })
+    </script>
 </body>
 </html>

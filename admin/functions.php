@@ -157,4 +157,34 @@ function postImage($image = '') {
     return $image;
   }
 }
+
+function loggedInUserId() {
+  global $connection;
+
+  if (isLoggedIn()) {
+    $username = $_SESSION['username'];
+    $result = mysqli_query($connection, "SELECT * FROM users WHERE username = '$username'");
+    if ($result) {
+      $row = mysqli_fetch_assoc($result);
+      return $row['user_id'];
+    }
+  }
+
+  return false;
+}
+
+function userLikedThisPost($post_id, $user_id) {
+  global $connection;
+
+  $result = mysqli_query($connection, "SELECT * FROM likes WHERE post_id = $post_id AND user_id = $user_id");
+  return mysqli_num_rows($result) !== 0 ? true : false;
+}
+
+function getPostLike($postId) {
+  global $connection;
+  $query = "SELECT COUNT(*) AS total_likes FROM likes WHERE post_id = $postId GROUP BY post_id";
+  $result = mysqli_query($connection, $query);
+  $likes_num = mysqli_fetch_assoc($result)['total_likes'];
+  return $likes_num ? $likes_num : 0;
+}
 ?>
